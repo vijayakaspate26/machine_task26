@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::view('/login', 'login');
+Route::post('/login',[AuthController::class,'login']);
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+
+    Route::view('/admin/dashboard', 'admin.dashboard')
+        ->name('admin.dashboard');
+
+    Route::view('/user/dashboard', 'user.dashboard')
+        ->name('user.dashboard');
+});
+
+
+Route::resource('products', ProductController::class);
